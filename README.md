@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+# Task Management Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native task management application built with Expo featuring authentication, offline support, and notifications.
 
-## Get started
+## Features
 
-1. Install dependencies
+- JWT-based authentication
+- Create, edit, and delete tasks
+- Task filtering (all, upcoming, past)
+- Offline support with automatic sync
+- Push notifications for due tasks
+- Modern UI with Material Design
 
-   ```bash
-   npm install
-   ```
+## Setup
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+1. **Install dependencies:**
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. **Configure backend (for mobile testing):**
+   - Update `config/api.ts` with your backend IP address:
+   ```typescript
+   const DEV_MACHINE_IP = '192.168.1.28'; // Replace with your machine's IP
+   ```
 
-## Learn more
+3. **Start the app:**
+```bash
+npm start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+4. **Run on device:**
+   - Scan QR code with Expo Go app
+   - Or press `i` for iOS simulator, `a` for Android emulator
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Demo Login
 
-## Join the community
+- **Username**: admin
+- **Password**: password
 
-Join our community of developers creating universal apps.
+## Tech Stack
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- React Native + Expo
+- TypeScript
+- AsyncStorage for local data
+- Expo Notifications
+- Expo Router for navigation
+
+## API Format
+
+**Authentication:**
+```json
+{
+  "status_code": 200,
+  "data": {"access_token": "JWT_TOKEN"}
+}
+```
+
+**Tasks:**
+```json
+{
+  "status_code": 200,
+  "data": [
+    {
+      "id": 1,
+      "title": "Task Title",
+      "due_date": "2024-01-15",
+      "user": {"id": 1, "username": "admin"}
+    }
+  ]
+}
+```
+
+## Troubleshooting
+
+**Network request failed on mobile:**
+- Find your machine's IP: `ifconfig | grep "inet " | grep -v 127.0.0.1`
+- Update `config/api.ts` with the correct IP address
+
+**Push notifications not working:**
+- Local notifications work in Expo Go
+- For remote push notifications, create a development build
