@@ -21,7 +21,7 @@ npm install
 2. **Configure backend (for mobile testing):**
    - Update `config/api.ts` with your backend IP address:
    ```typescript
-   const DEV_MACHINE_IP = '192.168.1.28'; // Replace with your machine's IP
+   const DEV_MACHINE_IP = '127.0.0.1'; // Replace with your machine's IP
    ```
 
 3. **Start the app:**
