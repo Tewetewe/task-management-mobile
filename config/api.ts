@@ -1,4 +1,4 @@
-const DEV_MACHINE_IP = '127.0.0.1';
+const DEV_MACHINE_IP = '192.168.5.165';
 const API_PORT = '3000';
 
 export const API_CONFIG = {

@@ -1,15 +1,16 @@
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '../components/ThemedText';
 import { ThemedView } from '../components/ThemedView';
 import { API_CONFIG } from '../config/api';
@@ -41,67 +42,73 @@ export default function LoginScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <ThemedView style={styles.content}>
-          <ThemedView style={styles.header}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <ThemedView style={styles.content}>
+            <ThemedView style={styles.header}>
             <ThemedText style={styles.title}>Task Manager</ThemedText>
-            <ThemedText style={styles.subtitle}>Sign in to continue</ThemedText>
+              <ThemedText style={styles.subtitle}>Sign in to continue</ThemedText>
+            </ThemedView>
+
+            <ThemedView style={styles.form}>
+              <ThemedView style={styles.inputContainer}>
+                <ThemedText style={styles.label}>Username</ThemedText>
+                <TextInput
+                  style={styles.input}
+                  value={username}
+                  onChangeText={setUsername}
+                  placeholder="Enter your username"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  editable={!isLoading}
+                />
+              </ThemedView>
+
+              <ThemedView style={styles.inputContainer}>
+                <ThemedText style={styles.label}>Password</ThemedText>
+                <TextInput
+                  style={styles.input}
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Enter your password"
+                  secureTextEntry
+                  autoCorrect={false}
+                  editable={!isLoading}
+                />
+              </ThemedView>
+
+              <TouchableOpacity
+                style={[styles.loginButton, isLoading && styles.loginButtonDisabled]}
+                onPress={handleLogin}
+                disabled={isLoading}
+              >
+                <Text style={styles.loginButtonText}>
+                  {isLoading ? 'Signing In...' : 'Sign In'}
+                </Text>
+              </TouchableOpacity>
+
+              <ThemedView style={styles.demoInfo}>
+                <ThemedText style={styles.demoText}>Demo Credentials:</ThemedText>
+                <ThemedText style={styles.demoText}>Username: {API_CONFIG.DEMO_CREDENTIALS.USERNAME}</ThemedText>
+                <ThemedText style={styles.demoText}>Password: {API_CONFIG.DEMO_CREDENTIALS.PASSWORD}</ThemedText>
+              </ThemedView>
+            </ThemedView>
           </ThemedView>
-
-          <ThemedView style={styles.form}>
-            <ThemedView style={styles.inputContainer}>
-              <ThemedText style={styles.label}>Username</ThemedText>
-              <TextInput
-                style={styles.input}
-                value={username}
-                onChangeText={setUsername}
-                placeholder="Enter your username"
-                autoCapitalize="none"
-                autoCorrect={false}
-                editable={!isLoading}
-              />
-            </ThemedView>
-
-            <ThemedView style={styles.inputContainer}>
-              <ThemedText style={styles.label}>Password</ThemedText>
-              <TextInput
-                style={styles.input}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Enter your password"
-                secureTextEntry
-                autoCorrect={false}
-                editable={!isLoading}
-              />
-            </ThemedView>
-
-            <TouchableOpacity
-              style={[styles.loginButton, isLoading && styles.loginButtonDisabled]}
-              onPress={handleLogin}
-              disabled={isLoading}
-            >
-              <Text style={styles.loginButtonText}>
-                {isLoading ? 'Signing In...' : 'Sign In'}
-              </Text>
-            </TouchableOpacity>
-
-            <ThemedView style={styles.demoInfo}>
-              <ThemedText style={styles.demoText}>Demo Credentials:</ThemedText>
-              <ThemedText style={styles.demoText}>Username: {API_CONFIG.DEMO_CREDENTIALS.USERNAME}</ThemedText>
-              <ThemedText style={styles.demoText}>Password: {API_CONFIG.DEMO_CREDENTIALS.PASSWORD}</ThemedText>
-            </ThemedView>
-          </ThemedView>
-        </ThemedView>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#f8f9fa',
+  },
   container: {
     flex: 1,
     backgroundColor: '#f8f9fa',
@@ -121,10 +128,15 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontSize: 26,
+    fontWeight: Platform.OS === 'ios' ? '700' : 'bold',
+    fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
     marginBottom: 8,
     color: '#1a202c',
+    textAlign: 'center',
+    alignSelf: 'center',
+    flexWrap: 'wrap',
+    maxWidth: '100%',
   },
   subtitle: {
     fontSize: 16,

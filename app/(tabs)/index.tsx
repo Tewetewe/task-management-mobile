@@ -2,13 +2,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import {
-    Alert,
-    FlatList,
-    RefreshControl,
-    StyleSheet,
-    TouchableOpacity,
-    View
+  Alert,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  TouchableOpacity,
+  View
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { TaskCard } from '@/components/TaskCard';
 import { TaskFormModal } from '@/components/TaskFormModal';
@@ -230,44 +231,50 @@ export default function TasksScreen() {
   );
 
   return (
-    <ThemedView style={styles.container}>
-      <FlatList
-        data={filteredTasks}
-        renderItem={renderTask}
-        keyExtractor={(item) => item.id.toString()}
-        ListHeaderComponent={renderHeader}
-        ListEmptyComponent={renderEmpty}
-        contentContainerStyle={styles.content}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => loadTasks(true)}
-            colors={['#3b82f6']}
-            tintColor="#3b82f6"
-          />
-        }
-        showsVerticalScrollIndicator={false}
-      />
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ThemedView style={styles.innerContainer}>
+        <FlatList
+          data={filteredTasks}
+          renderItem={renderTask}
+          keyExtractor={(item) => item.id.toString()}
+          ListHeaderComponent={renderHeader}
+          ListEmptyComponent={renderEmpty}
+          contentContainerStyle={styles.content}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => loadTasks(true)}
+              colors={['#3b82f6']}
+              tintColor="#3b82f6"
+            />
+          }
+          showsVerticalScrollIndicator={false}
+        />
 
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={handleAddTask}
-      >
-        <Ionicons name="add" size={24} color="#ffffff" />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.fab}
+          onPress={handleAddTask}
+        >
+          <Ionicons name="add" size={24} color="#ffffff" />
+        </TouchableOpacity>
 
-      <TaskFormModal
-        visible={modalVisible}
-        task={editingTask}
-        onClose={() => setModalVisible(false)}
-        onSubmit={handleSubmitTask}
-      />
-    </ThemedView>
+        <TaskFormModal
+          visible={modalVisible}
+          task={editingTask}
+          onClose={() => setModalVisible(false)}
+          onSubmit={handleSubmitTask}
+        />
+      </ThemedView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: '#f8f9fa',
+  },
+  innerContainer: {
     flex: 1,
     backgroundColor: '#f8f9fa',
   },
@@ -277,7 +284,7 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   header: {
-    paddingTop: 60,
+    paddingTop: 20,
     paddingBottom: 24,
   },
   userSection: {
